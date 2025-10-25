@@ -9,14 +9,15 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <main>
+    <main className="h-full">
       <SideBar />
-      <div className="pl-16 h-full bg-cyan-800">
+      <div className="pl-16 h-full">
         <div className="flex gap-x-3 h-full">
           <OrgSideBar />
           <div className="h-full flex-1">
-            <NavBar/>
-            {children}</div>
+            <NavBar />
+            {children}
+          </div>
         </div>
       </div>
     </main>
