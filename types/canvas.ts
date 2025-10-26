@@ -85,6 +85,13 @@ export enum CanvasMode {
   Pencil,
 }
 
+export type Layer =
+  | RectangleLayer
+  | EllipseLayer
+  | PathLayer
+  | TextLayer
+  | NoteLayer;
+
 export type CanvasState =
   | { mode: CanvasMode.None }
   | { mode: CanvasMode.SelectionNet; origin: Point; current?: Point }
