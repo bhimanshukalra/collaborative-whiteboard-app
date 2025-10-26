@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
+import { MouseEvent } from "react";
 
 interface FooterProps {
   title: string;
@@ -18,6 +19,14 @@ function Footer({
   onClick,
   title,
 }: FooterProps) {
+  
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    onClick();
+  };
+
   return (
     <div className="relative bg-white p-3">
       <p className="text-sm truncate max-w-10/12">{title}</p>
@@ -26,7 +35,7 @@ function Footer({
       </p>
       <button
         disabled={disabled}
-        onClick={onClick}
+        onClick={handleClick}
         className={cn(
           "opacity-0 group-hover:opacity-100 transition absolute top-3 right-3 text-muted-foreground hover:text-blue-600",
           disabled && "cursor-not-allowed opacity-75"
