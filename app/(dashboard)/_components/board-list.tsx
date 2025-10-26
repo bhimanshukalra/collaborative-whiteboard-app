@@ -17,7 +17,11 @@ interface BoardListProps {
 }
 
 function BoardList({ orgId, query }: BoardListProps) {
-  const data = useQuery(api.boards.get, { orgId });
+  const data = useQuery(api.boards.get, {
+    orgId,
+    search: query.search ?? "",
+    favourites: query.favourites ?? "",
+  });
 
   if (data === undefined) {
     return (
