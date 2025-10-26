@@ -1,3 +1,4 @@
+import { rgbToCss } from "@/lib/utils";
 import { RectangleLayer } from "@/types/canvas";
 import { PointerEvent } from "react";
 
@@ -26,8 +27,8 @@ const Rectangle = ({
       width={width}
       height={height}
       strokeWidth={1}
-      fill="#000"
-      stroke="transparent"
+      fill={fill ? rgbToCss(fill) : "#000"}
+      stroke={selectionColor || "transparent"}
     />
   );
 };
