@@ -1,28 +1,33 @@
-'use client'
+"use client";
 
 import { connectionIdToColor } from "@/lib/utils";
 import { useOther } from "@liveblocks/react";
 import { MousePointer2 } from "lucide-react";
-import { memo } from "react"
+import { memo } from "react";
 
 interface CursorProps {
   connectionId: number;
 }
 
-const Cursor = memo(({connectionId}: CursorProps) => {
-    const userInfo = useOther(connectionId, (user) => user?.info)
-    const cursor = useOther(connectionId, (user)=>user.presence.cursor)
+const Cursor = memo(({ connectionId }: CursorProps) => {
+  const userInfo = useOther(connectionId, (user) => user?.info);
+  const cursor = useOther(connectionId, (user) => user.presence.cursor);
 
-    const name = userInfo?.name || "Anonymous team mate";
+  const name = userInfo?.name || "Anonymous team mate";
 
-    if(!cursor){
-        return null
-    }
+  if (!cursor) {
+    return null;
+  }
 
-    const {x,y} = cursor
+  const { x, y } = cursor;
 
   return (
-    <foreignObject style={{ transform: `translateX(${x}px) translateY(${y}px)` }} height={50} width={50} className="relative drop-shadow-md">
+    <foreignObject
+      style={{ transform: `translateX(${x}px) translateY(${y}px)` }}
+      height={50}
+      width={name.length * 10 + 24}
+      className="relative drop-shadow-md"
+    >
       <MousePointer2
         className="h-5 w-5"
         style={{
@@ -30,8 +35,14 @@ const Cursor = memo(({connectionId}: CursorProps) => {
           color: connectionIdToColor(connectionId),
         }}
       />
+      <div
+        className="absolute left-5 px-1.5 py-0.5 rounded-md text-xs text-white font-semibold"
+        style={{ backgroundColor: connectionIdToColor(connectionId) }}
+      >
+        {name}
+      </div>
     </foreignObject>
   );
 });
 
-export default Cursor
+export default Cursor;
