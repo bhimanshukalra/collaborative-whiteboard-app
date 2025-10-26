@@ -6,7 +6,7 @@ import { useMutation, useSelf } from "@liveblocks/react";
 import { memo } from "react";
 import { ColorPicker } from "./color-picker";
 import ToolTip from "@/components/tooltip";
-import { Trash2 } from "lucide-react";
+import { BringToFront, SendToBack, Trash2 } from "lucide-react";
 import { useDeleteLayers } from "@/hooks/use-delete-layers";
 import { Button } from "@/components/ui/button";
 
@@ -34,6 +34,49 @@ const SelectionTools = memo(
       [selection, setLastUsedColor]
     );
 
+    const moveToBack = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds");
+        const indices: number[] = [];
+
+        const arr = liveLayerIds.toArray();
+
+        for (let index = 0; index < arr.length; index++) {
+          if (selection?.includes(arr[index])) {
+            indices.push(index);
+          }
+        }
+
+        for (let index = 0; index < indices.length; index++) {
+          liveLayerIds.move(indices[index], index);
+        }
+      },
+      [selection]
+    );
+
+    const bringToFront = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds");
+        const indices: number[] = [];
+
+        const arr = liveLayerIds.toArray();
+
+        for (let index = 0; index < arr.length; index++) {
+          if (selection?.includes(arr[index])) {
+            indices.push(index);
+          }
+        }
+
+        for (let index = indices.length - 1; index >= 0; index--) {
+          liveLayerIds.move(
+            indices[index],
+            arr.length - 1 - (indices.length - 1 - index)
+          );
+        }
+      },
+      [selection]
+    );
+
     if (!selectionBounds) {
       return null;
     }
@@ -49,6 +92,18 @@ const SelectionTools = memo(
         }}
       >
         <ColorPicker onChange={setFill} />
+        <div className="flex flex-col gap-y-0.5">
+          <ToolTip label="Bring to front">
+            <Button variant="board" size={"icon"} onClick={bringToFront}>
+              <BringToFront />
+            </Button>
+          </ToolTip>
+          <ToolTip label="Send to back" side="bottom">
+            <Button variant="board" size={"icon"} onClick={moveToBack}>
+              <SendToBack />
+            </Button>
+          </ToolTip>
+        </div>
         <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
           <ToolTip label="Delete">
             <Button variant={"board"} size={"icon"} onClick={deleteLayers}>
