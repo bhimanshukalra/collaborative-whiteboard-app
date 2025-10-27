@@ -7,12 +7,13 @@ export const useDeleteLayers = () => {
     ({ storage, setMyPresence }) => {
       const liveLayers = storage.get("layers");
       const liveLayerIds = storage.get("layerIds");
-
-      for (const id of selection) {
-        liveLayers.delete(id);
-        const index = liveLayerIds.indexOf(id);
-        if (index !== -1) {
-          liveLayerIds.delete(index);
+      if (selection) {
+        for (const id of selection) {
+          liveLayers.delete(id);
+          const index = liveLayerIds.indexOf(id);
+          if (index !== -1) {
+            liveLayerIds.delete(index);
+          }
         }
       }
 

@@ -47,6 +47,7 @@ import SelectionTools from "./selection-tools";
 import { Path } from "./path";
 import { useDisabledScrollBounce } from "@/hooks/use-disable-scroll-bounce";
 import { useDeleteLayers } from "@/hooks/use-delete-layers";
+import Loading from "./loading";
 
 interface CanvasProps {
   boardId: string;
@@ -421,6 +422,9 @@ function Canvas({ boardId }: CanvasProps) {
     [setCanvasState, camera, history, canvasState.mode]
   );
 
+  if (layerIds === null) {
+    return <Loading />;
+  }
   return (
     <main className="h-full w-full relative bg-neutral-100 touch-none">
       <Info boardId={boardId} />
